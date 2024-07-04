@@ -5,6 +5,25 @@ public:
   virtual void quack() = 0;
 };
 
+class Goose {
+public:
+  void honk() {
+    std::cout << "Honk" << std::endl;
+  }
+};
+
+class GooseAdapter : public Quackable {
+private:
+  Goose goose;
+
+public:
+  GooseAdapter(Goose& goose) : goose(goose) {}
+
+  void quack() override {
+    goose.honk();
+  }
+};
+
 class MallardDuck : public Quackable {
 public:
   void quack() override {
@@ -41,12 +60,16 @@ public:
     RubberDuck rubberDuck;
     DuckCall duckCall;
 
-    std::cout << "\n== duck simulator ==" << std::endl;
+    Goose goose;
+    GooseAdapter gooseDuck(goose);
+
+    std::cout << "\n== duck simulator with goose ==" << std::endl;
 
     simulate(&mallardDuck);
     simulate(&redheadDuck);
     simulate(&rubberDuck);
     simulate(&duckCall);
+    simulate(&gooseDuck);
   }
 
 private:
